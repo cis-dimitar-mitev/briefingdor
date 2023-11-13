@@ -5,6 +5,7 @@ import { FileObject } from "openai/resources/files.mjs";
 import { FsReadStream } from "openai/_shims/index.mjs";
 import OPEN_AI_MODELS from "@/utilis/utilis";
 import { prisma } from "@/db";
+import { ChatCompletion } from "openai/resources/index.mjs";
 
 const openai = new OpenAI();
 
@@ -101,9 +102,10 @@ export async function plagiarism(
                 { role: "user", content: `${plagiarismPrompt} ${toCheckForPlagiarism}` },
             ],
             model: model,
-        });
+        }).catch((error) => console.log(error));
 
-        resultText = chatCompletion.choices[0].message.content ?? "";
+        var res = chatCompletion as ChatCompletion;
+        resultText = res.choices[0].message.content ?? "";
         console.log(resultText);
     } catch (error) {
         console.error(error);
