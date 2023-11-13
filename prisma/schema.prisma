@@ -14,3 +14,11 @@ model Settings {
   id    Int     @id @default(autoincrement())
   value String
 }
+
+model History{
+  id Int @id @default(autoincrement())
+  initialText String
+  resultText String
+  timestamp DateTime
+  cost Float
+}

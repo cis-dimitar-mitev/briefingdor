@@ -7,6 +7,7 @@ import { Stream } from "stream";
 import { FsReadStream } from "openai/_shims/index.mjs";
 import OPEN_AI_MODELS from "@/utilis/utilis";
 import { ChatCompletion } from "openai/resources/index.mjs";
+import { prisma } from "@/db";
 
 const openai = new OpenAI();
 const model = "gpt-3.5-turbo";
@@ -46,7 +47,11 @@ export async function check(
     OPEN_AI_MODELS[model].prompt * promptTokens +
     OPEN_AI_MODELS[model].completion * completionsTokens;
 
-  return chatCompletion.choices[0].message.content;
+  const resultText =chatCompletion.choices[0].message.content;
+
+   await prisma.history.create({data: {initialText: text, resultText: resultText?? '', cost, timestamp: new Date()}});
+
+  return resultText;
 }
 
 /**
