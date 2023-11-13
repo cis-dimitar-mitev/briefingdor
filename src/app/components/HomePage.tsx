@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { check } from "../actions/openAi";
+import { check, plagiarism } from "../actions/openAi";
 import {
   Checkbox,
   FormGroup,
@@ -19,6 +19,7 @@ const HomePage = () => {
   const [shouldCheckPunctuation, setShoudCheckPunctuation] =
     useState<boolean>(false);
   const [improveWordChoice, setImproveWordChoice] = useState<boolean>(false);
+  const [useGpt4Model, setUseGpt4Model] = useState<boolean>(false);
   const [shouldRewrite, setShouldRewrite] = useState<boolean>(false);
   const [primaryText, setPrimaryText] = useState<string>("");
   const [output, setOutput] = useState<string>("");
@@ -31,13 +32,19 @@ const HomePage = () => {
 
   const handleCheckText = async () => {
     setIsLoading(true);
-    const checkedText = await check(
-      primaryText,
-      shouldCheckGrammarMistakes,
-      shouldCheckSpellingMistakes,
-      shouldCheckPunctuation,
-      improveWordChoice
-    );
+    let checkedText: string | null = null;
+    if (!shouldRewrite) {
+      checkedText = await check(
+        primaryText,
+        useGpt4Model ? "gpt-4" : "gpt-3.5-turbo",
+        shouldCheckGrammarMistakes,
+        shouldCheckSpellingMistakes,
+        shouldCheckPunctuation,
+        improveWordChoice
+      );
+    } else {
+      checkedText = await plagiarism(primaryText);
+    }
     setOutput(checkedText || "");
     setIsLoading(false);
   };
@@ -100,6 +107,16 @@ const HomePage = () => {
               />
             }
             label="Rewrite to reduce plagiarism"
+          />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={useGpt4Model}
+                onClick={() => setUseGpt4Model(!useGpt4Model)}
+              />
+            }
+            label="GPT-4 Turbo"
           />
         </FormGroup>
 
