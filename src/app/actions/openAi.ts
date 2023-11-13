@@ -5,16 +5,30 @@ import * as fs from 'fs';
 import { FileObject } from 'openai/resources/files.mjs';
 import { Stream } from 'stream';
 import { FsReadStream } from 'openai/_shims/index.mjs';
+import OPEN_AI_MODELS from '@/utilis/utilis';
 
 const openai = new OpenAI();
+const model = 'gpt-3.5-turbo';
 
-export async function main() {
+export async function check( text: string, gramarCheck: boolean = true, spellCheck: boolean = true, punctuationCheck: boolean = true, wordsCheck: boolean = true) {
+    let promp = 'You are news analyst in Cision and you are writing daily news briefings.'+
+    'You have been given the task to proofread and suggest improvements of another analyst’s daily writeup.'+
+    `You should check the text below for ${gramarCheck! ? '' : 'grammar mistakes ,'}${spellCheck! ? '' : 'spelling mistakes, '}`+
+    `${punctuationCheck! ? '' : 'punctuation'}, without touching the quoted parts. `+
+    `${wordsCheck! ? '' : 'You should also suggest improvements for word choice.'}`;
+
     const chatCompletion = await openai.chat.completions.create({
-        messages: [{ role: 'user', content: 'Say this is a test' }],
-        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'system', content: promp }, 
+        { role: 'user', content: text }],
+        model: model,
     });
 
-    return chatCompletion;
+    let promptTokens = chatCompletion.usage?.prompt_tokens?? 0;
+    let completionsTokens = chatCompletion.usage?.completion_tokens?? 0;
+
+    let cost = OPEN_AI_MODELS[model].prompt * promptTokens + OPEN_AI_MODELS[model].completion * completionsTokens;
+
+    return { 'text': chatCompletion.choices[0].message.content, 'cost': cost}; 
 }
 
 
