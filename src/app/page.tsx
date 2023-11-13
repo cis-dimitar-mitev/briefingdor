@@ -4,7 +4,6 @@ import { Button } from "@mui/material";
 import styles from "./page.module.css";
 import { test } from "./actions";
 import { useState } from "react";
-import HomePage from "./components/HomePage";
 
 export default function Home() {
   const [mockState, setMockState] = useState("");
@@ -16,16 +15,14 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      {/* <div className={styles.description}>
+      <div className={styles.description}>
         {mockState}
 
         <Button variant="outlined" onClick={() => handleServerAction()}>
           Test
         </Button>
 
-      </div> */}
-
-        <HomePage />
+      </div>
     </main>
   );
 }
