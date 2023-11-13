@@ -43,7 +43,7 @@ const HomePage = () => {
         improveWordChoice
       );
     } else {
-      checkedText = await plagiarism(primaryText);
+      checkedText = await plagiarism(primaryText, useGpt4Model ? "gpt-4" : "gpt-3.5-turbo");
     }
     setOutput(checkedText || "");
     setIsLoading(false);
