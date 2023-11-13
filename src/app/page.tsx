@@ -3,7 +3,8 @@
 import { Button } from "@mui/material";
 import styles from "./page.module.css";
 import { useState } from "react";
-import { check } from "./actions/openAi"
+import { check } from "./actions/openAi";
+import HomePage from "./components/HomePage";
 
 export default function Home() {
   const [mockState, setMockState] = useState<any>();
@@ -15,7 +16,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
+      {/* <div className={styles.description}>
         {mockState}
 
         <Button variant="outlined" onClick={() => handleServerAction(`Pennsylvania Senate Honors Harley-Davidson And Davidson Family.
@@ -45,7 +46,9 @@ Also reporting on the story are Roadracing World (11/2, Swarts), American Rider
           Test
         </Button>
 
-      </div>
+      </div> */}
+
+      <HomePage />
     </main>
   );
 }
