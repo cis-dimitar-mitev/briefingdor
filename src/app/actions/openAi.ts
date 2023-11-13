@@ -49,8 +49,8 @@ export async function check(
     let completionsTokens = chatCompletion.usage?.completion_tokens ?? 0;
 
     let cost =
-        OPEN_AI_MODELS[model].prompt * promptTokens +
-        OPEN_AI_MODELS[model].completion * completionsTokens;
+        OPEN_AI_MODELS[model as keyof typeof OPEN_AI_MODELS].prompt * promptTokens +
+        OPEN_AI_MODELS[model as keyof typeof OPEN_AI_MODELS].completion * completionsTokens;
 
     const resultText = chatCompletion.choices[0].message.content;
 
