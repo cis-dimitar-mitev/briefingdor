@@ -94,16 +94,20 @@ export async function plagiarism(
     model: string = "gpt-3.5-turbo"
 ): Promise<string | null> {
     const plagiarismPrompt = `rewrite this text to reduce plagiarism without changing the quoted text`;
-    console.log('here I am in the plagiarism function');
-    const chatCompletion = await openai.chat.completions.create({
-        messages: [
-            { role: "user", content: `${plagiarismPrompt} ${toCheckForPlagiarism}` },
-        ],
-        model: model,
-    });
+    let resultText = '';
+    try {
+        const chatCompletion = await openai.chat.completions.create({
+            messages: [
+                { role: "user", content: `${plagiarismPrompt} ${toCheckForPlagiarism}` },
+            ],
+            model: model,
+        });
 
-    const resultText = chatCompletion.choices[0].message.content;
-    console.log(resultText);
+        resultText = chatCompletion.choices[0].message.content ?? "";
+        console.log(resultText);
+    } catch (error) {
+        console.error(error);
+    }
 
     return resultText;
 }
