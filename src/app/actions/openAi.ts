@@ -6,6 +6,7 @@ import { FileObject } from 'openai/resources/files.mjs';
 import { Stream } from 'stream';
 import { FsReadStream } from 'openai/_shims/index.mjs';
 import OPEN_AI_MODELS from '@/utilis/utilis';
+import { ChatCompletion } from 'openai/resources/index.mjs';
 
 const openai = new OpenAI();
 const model = 'gpt-3.5-turbo';
@@ -28,7 +29,7 @@ export async function check( text: string, gramarCheck: boolean = true, spellChe
 
     let cost = OPEN_AI_MODELS[model].prompt * promptTokens + OPEN_AI_MODELS[model].completion * completionsTokens;
 
-    return { 'text': chatCompletion.choices[0].message.content, 'cost': cost}; 
+    return chatCompletion.choices[0].message.content; 
 }
 
 
@@ -45,4 +46,22 @@ export async function uploadFile(fileStream: FsReadStream, purpose: "assistants"
     });
 
     return file;
+}
+
+
+/**
+ * Checks for plagiarism in the given text by rewriting it to reduce plagiarism without changing the quoted text.
+ * @param toCheckForPlagiarism - The text to check for plagiarism.
+ * @param model - The OpenAI model to use for the check. Defaults to 'gpt-3.5-turbo'.
+ * @returns A Promise that resolves to a ChatCompletion object containing the rewritten text.
+ */
+export async function plagiarism(toCheckForPlagiarism: string, model: string = 'gpt-3.5-turbo'): Promise<ChatCompletion> {
+    const plagiarismPrompt = `rewrite this text to reduce plagiarism without changing the quoted text`;
+
+    const chatCompletion = await openai.chat.completions.create({
+        messages: [{ role: 'user', content: `${plagiarismPrompt} ${toCheckForPlagiarism}` }],
+        model: model,
+    });
+
+    return chatCompletion;
 }
