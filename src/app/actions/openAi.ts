@@ -4,7 +4,6 @@ import OpenAI from "openai";
 import { FileObject } from "openai/resources/files.mjs";
 import { FsReadStream } from "openai/_shims/index.mjs";
 import OPEN_AI_MODELS from "@/utilis/utilis";
-import { ChatCompletion } from "openai/resources/index.mjs";
 import { prisma } from "@/db";
 
 const openai = new OpenAI();
@@ -95,7 +94,7 @@ export async function plagiarism(
     model: string = "gpt-3.5-turbo"
 ): Promise<string | null> {
     const plagiarismPrompt = `rewrite this text to reduce plagiarism without changing the quoted text`;
-
+    console.log('here I am in the plagiarism function');
     const chatCompletion = await openai.chat.completions.create({
         messages: [
             { role: "user", content: `${plagiarismPrompt} ${toCheckForPlagiarism}` },
@@ -104,6 +103,7 @@ export async function plagiarism(
     });
 
     const resultText = chatCompletion.choices[0].message.content;
+    console.log(resultText);
 
     return resultText;
 }

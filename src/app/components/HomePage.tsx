@@ -43,6 +43,7 @@ const HomePage = () => {
         improveWordChoice
       );
     } else {
+      console.log("plagiarism");
       checkedText = await plagiarism(primaryText, useGpt4Model ? "gpt-4" : "gpt-3.5-turbo");
     }
     setOutput(checkedText || "");
