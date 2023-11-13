@@ -47,9 +47,16 @@ export async function check(
     OPEN_AI_MODELS[model].prompt * promptTokens +
     OPEN_AI_MODELS[model].completion * completionsTokens;
 
-  const resultText =chatCompletion.choices[0].message.content;
+  const resultText = chatCompletion.choices[0].message.content;
 
-   await prisma.history.create({data: {initialText: text, resultText: resultText?? '', cost, timestamp: new Date()}});
+  await prisma.history.create({
+    data: {
+      initialText: text,
+      resultText: resultText ?? "",
+      cost,
+      timestamp: new Date(),
+    },
+  });
 
   return resultText;
 }
