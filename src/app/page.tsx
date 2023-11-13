@@ -2,15 +2,15 @@
 
 import { Button } from "@mui/material";
 import styles from "./page.module.css";
-import { test } from "./actions";
 import { useState } from "react";
+import { main } from "./actions/openAi"
 
 export default function Home() {
-  const [mockState, setMockState] = useState("");
+  const [mockState, setMockState] = useState<any>();
 
   const handleServerAction = async () => {
-    const temp = await test();
-    setMockState(temp);
+    const temp = await main();
+    setMockState(JSON.stringify(temp));
   };
 
   return (
