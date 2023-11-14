@@ -127,35 +127,40 @@ const HomePage = ({ check, plagiarism }: any) => {
           />
         </FormGroup>
 
-        <div className={styles.textAreaContainer}>
-          <div className={styles.textAreaDiv}>
-            <h4 className={styles.textAreaHeading}>Add your text</h4>
-            <textarea
-              value={primaryText}
-              className={styles.textAreaSummary}
-              rows={20}
-              onChange={handleAddText}
+        {!output && !isLoading && (
+          <div className={styles.textAreaContainer}>
+            <div className={styles.textAreaDiv}>
+              <h4 className={styles.textAreaHeading}>Add your text</h4>
+              <textarea
+                value={primaryText}
+                className={styles.textAreaSummary}
+                rows={20}
+                onChange={handleAddText}
+              />
+            </div>
+
+            <div className={styles.textAreaDiv}>
+              <h4 className={styles.textAreaHeading}>Output</h4>
+            </div>
+          </div>
+        )}
+
+        {isLoading ? (
+          <div className={styles.spinner}>
+            <CircularProgress size={100} />
+          </div>
+        ) : (
+          output && (
+            <ReactDiffViewer
+              oldValue={primaryText}
+              newValue={output}
+              splitView={true}
+              hideLineNumbers={true}
+              leftTitle={"Initial text"}
+              rightTitle={"Corrected text"}
             />
-          </div>
-
-          <div className={styles.textAreaDiv}>
-            <h4 className={styles.textAreaHeading}>Output</h4>
-
-            {isLoading ? (
-              <div className={styles.spinner}>
-                <CircularProgress size={100} />
-              </div>
-            ) : (
-              output && (
-                <ReactDiffViewer
-                  oldValue={primaryText}
-                  newValue={output}
-                  splitView={true}
-                />
-              )
-            )}
-          </div>
-        </div>
+          )
+        )}
 
         <Button
           style={{ background: "#00607A" }}
