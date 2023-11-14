@@ -53,73 +53,83 @@ const HomePage = () => {
   return (
     <>
       <div className={styles.checkboxesContainer}>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={shouldCheckGrammarMistakes}
-                onClick={() =>
-                  setShoudCheckGrammarMistakes(!shouldCheckGrammarMistakes)
-                }
-              />
-            }
-            label="Grammar mistakes​"
-          />
+        <div style={{ display: 'flex' }}>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  style={{ color: shouldCheckGrammarMistakes ? '#00607A' : '' }}
+                  checked={shouldCheckGrammarMistakes}
+                  onClick={() =>
+                    setShoudCheckGrammarMistakes(!shouldCheckGrammarMistakes)
+                  }
+                />
+              }
+              label="Grammar mistakes​"
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={shouldCheckSpellingMistakes}
-                onClick={() =>
-                  setShouldCheckSpellingMistakes(!shouldCheckSpellingMistakes)
-                }
-              />
-            }
-            label="Spelling mistakes​"
-          />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  style={{ color: shouldCheckSpellingMistakes ? '#00607A' : '' }}
+                  checked={shouldCheckSpellingMistakes}
+                  onClick={() =>
+                    setShouldCheckSpellingMistakes(!shouldCheckSpellingMistakes)
+                  }
+                />
+              }
+              label="Spelling mistakes​"
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={shouldCheckPunctuation}
-                onClick={() =>
-                  setShoudCheckPunctuation(!shouldCheckPunctuation)
-                }
-              />
-            }
-            label="Punctuation"
-          />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  style={{ color: shouldCheckPunctuation ? '#00607A' : '' }}
+                  checked={shouldCheckPunctuation}
+                  onClick={() =>
+                    setShoudCheckPunctuation(!shouldCheckPunctuation)
+                  }
+                />
+              }
+              label="Punctuation"
+            />
+          </FormGroup>
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={improveWordChoice}
-                onClick={() => setImproveWordChoice(!improveWordChoice)}
-              />
-            }
-            label="Word choice improvements"
-          />
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  style={{ color: improveWordChoice ? '#00607A' : '' }}
+                  checked={improveWordChoice}
+                  onClick={() => setImproveWordChoice(!improveWordChoice)}
+                />
+              }
+              label="Word choice improvements"
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={shouldRewrite}
-                onClick={() => setShouldRewrite(!shouldRewrite)}
-              />
-            }
-            label="Rewrite to reduce plagiarism"
-          />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  style={{ color: shouldRewrite ? '#00607A' : '' }}
+                  checked={shouldRewrite}
+                  onClick={() => setShouldRewrite(!shouldRewrite)}
+                />
+              }
+              label="Rewrite to reduce plagiarism"
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={useGpt4Model}
-                onClick={() => setUseGpt4Model(!useGpt4Model)}
-              />
-            }
-            label="GPT-4 Turbo"
-          />
-        </FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  style={{ color: useGpt4Model ? '#00607A' : '' }}
+                  checked={useGpt4Model}
+                  onClick={() => setUseGpt4Model(!useGpt4Model)}
+                />
+              }
+              label="GPT-4 Turbo"
+            />
+          </FormGroup>
+        </div>
 
         <div className={styles.textAreaContainer}>
           <div className={styles.textAreaDiv}>
@@ -127,7 +137,7 @@ const HomePage = () => {
             <textarea
               value={primaryText}
               className={styles.textAreaSummary}
-              rows={20}
+              rows={40}
               onChange={handleAddText}
             />
           </div>
@@ -142,7 +152,7 @@ const HomePage = () => {
             ) : (
               <textarea
                 value={output}
-                rows={20}
+                rows={40}
                 className={styles.textAreaSummary}
                 onChange={handleAddText}
               />

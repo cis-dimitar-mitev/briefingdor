@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import styles from '../page.module.css';
 
@@ -45,11 +45,49 @@ const columns = [
   { field: "price", headerName: "Price", width: 150 },
 ];
 
-
 export default function History() {
+  const [selection, setSelection] = useState<any>(null);
+
   return (
     <div className={styles.historyContainer}>
-      <DataGrid rows={rows} columns={columns} style={{ backgroundColor: '#fff' }} />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        style={{ backgroundColor: '#fff', maxHeight: '500px' }}
+        onRowSelectionModelChange={(id) => {
+          const selectedIDs = new Set(id);
+          const selectedRowData = rows.filter((row) =>
+            selectedIDs.has(row.id)
+          );
+
+          setSelection(selectedRowData[0]);
+        }}
+      />
+      {
+        selection && (
+          <div className={styles.textAreaContainer}>
+            <div className={styles.textAreaDiv}>
+              <h4 className={styles.textAreaHeading}>Initial text</h4>
+              <textarea
+                value={selection.initialText}
+                className={styles.textAreaSummary}
+                rows={20}
+                disabled
+              />
+            </div>
+
+            <div className={styles.textAreaDiv}>
+              <h4 className={styles.textAreaHeading}>Result text</h4>
+              <textarea
+                value={selection.resultText}
+                rows={20}
+                className={styles.textAreaSummary}
+                disabled
+              />
+            </div>
+          </div>
+        )
+      }
     </div>
   );
 }
