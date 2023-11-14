@@ -159,7 +159,8 @@
   padding: 3em;
 }
 
-.navLink {
+.navLink,
+.navLink:visited {
   color: #fd7c3a;
   padding: 10px;
   font-weight: bold;

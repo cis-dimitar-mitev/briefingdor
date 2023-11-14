@@ -8,13 +8,20 @@ const columns = [
   { field: "price", headerName: "Price", width: 150 },
 ];
 
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import ReactDiffViewer from "react-diff-viewer-continued";
 
 export const History = ({ rows }: any) => {
   const [selectedRow, setSelectedRow] = useState<any>();
-  console.log(selectedRow);
+  const [comparisonMode, setComparisonMode] = useState("diffChars");
 
   return (
     <>
@@ -25,8 +32,51 @@ export const History = ({ rows }: any) => {
         sx={{ maxHeight: "43vh" }}
         onRowClick={(row) => setSelectedRow(row)}
       />
+
+      <br />
+      <hr />
+      <br />
       {selectedRow ? (
         <div style={{ maxHeight: "43vh" }}>
+          <FormControl>
+            <FormLabel>Choose comparison mode:</FormLabel>
+            <RadioGroup
+              row
+              value={comparisonMode}
+              onChange={(e) => setComparisonMode(e.target.value)}
+            >
+              <FormControlLabel
+                value="diffChars"
+                control={<Radio />}
+                label="Character"
+              />
+              <FormControlLabel
+                value="diffWords"
+                control={<Radio />}
+                label="Word"
+              />
+              <FormControlLabel
+                value="diffWordsWithSpace"
+                control={<Radio />}
+                label="Word with space"
+              />
+              <FormControlLabel
+                value="diffLines"
+                control={<Radio />}
+                label="Lines"
+              />
+              <FormControlLabel
+                value="diffTrimmedLines"
+                control={<Radio />}
+                label="Trimmed Lines"
+              />{" "}
+              <FormControlLabel
+                value="diffSentences"
+                control={<Radio />}
+                label="Sentences"
+              />
+            </RadioGroup>
+          </FormControl>
           <ReactDiffViewer
             oldValue={selectedRow.row.initialText}
             newValue={selectedRow.row.resultText}
@@ -35,7 +85,7 @@ export const History = ({ rows }: any) => {
             leftTitle={"Initial text"}
             rightTitle={"Corrected text"}
             //@ts-ignore
-            compareMethod={"diffWords"}
+            compareMethod={comparisonMode}
           />
         </div>
       ) : (
