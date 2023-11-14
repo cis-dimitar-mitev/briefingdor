@@ -1,6 +1,6 @@
 {
   "functions": {
-    "*": {
+    "app/actions/openAi.ts": {
       "maxDuration": 300
     }
   }
