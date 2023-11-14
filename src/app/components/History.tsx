@@ -9,13 +9,33 @@ const columns = [
 ];
 
 import { DataGrid } from "@mui/x-data-grid";
+import { useState } from "react";
+import ReactDiffViewer from "react-diff-viewer";
 
 export const History = ({ rows }: any) => {
+  const [selectedRow, setSelectedRow] = useState<any>();
+  console.log(selectedRow);
+
   return (
-    <DataGrid
-      rows={rows}
-      columns={columns}
-      style={{ backgroundColor: "#fff" }}
-    />
+    <>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        style={{ backgroundColor: "#fff" }}
+        onRowClick={(row) => setSelectedRow(row)}
+      />
+      {selectedRow ? (
+        <ReactDiffViewer
+          oldValue={selectedRow.row.initialText}
+          newValue={selectedRow.row.resultText}
+          splitView={true}
+          hideLineNumbers={true}
+          leftTitle={"Initial text"}
+          rightTitle={"Corrected text"}
+        />
+      ) : (
+        "Please select a row to view."
+      )}
+    </>
   );
 };
