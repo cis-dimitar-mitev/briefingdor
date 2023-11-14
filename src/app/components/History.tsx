@@ -34,6 +34,8 @@ export const History = ({ rows }: any) => {
             hideLineNumbers={true}
             leftTitle={"Initial text"}
             rightTitle={"Corrected text"}
+            //@ts-ignore
+            compareMethod={"diffWords"}
           />
         </div>
       ) : (
