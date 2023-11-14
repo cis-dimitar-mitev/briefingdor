@@ -55,8 +55,8 @@ const HomePage = () => {
   };
 
   const diff = new Diff();
-  const textDiff = diff.main(primaryText, output);
-  diff.prettyHtml(textDiff);
+  const textDiff = diff?.main(primaryText, output);
+  if (diff) diff.prettyHtml(textDiff);
 
   return (
     <>
