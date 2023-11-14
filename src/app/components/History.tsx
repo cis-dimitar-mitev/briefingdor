@@ -22,11 +22,11 @@ export const History = ({ rows }: any) => {
         rows={rows}
         columns={columns}
         style={{ backgroundColor: "#fff" }}
-        sx={{ maxHeight: "45vh" }}
+        sx={{ maxHeight: "43vh" }}
         onRowClick={(row) => setSelectedRow(row)}
       />
       {selectedRow ? (
-        <div style={{ maxHeight: "45vh" }}>
+        <div style={{ maxHeight: "43vh" }}>
           <ReactDiffViewer
             oldValue={selectedRow.row.initialText}
             newValue={selectedRow.row.resultText}
