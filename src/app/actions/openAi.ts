@@ -6,7 +6,7 @@ import { prisma } from "@/db";
 import { ChatCompletion } from "openai/resources/index.mjs";
 
 export const config = {
-  maxDuration: 300,
+    maxDuration: 300,
 };
 
 /**
@@ -20,58 +20,61 @@ export const config = {
  * @returns The corrected text.
  */
 export async function check(
-  text: string,
-  model: string = "gpt-3.5-turbo",
-  gramarCheck: boolean = true,
-  spellCheck: boolean = true,
-  punctuationCheck: boolean = true,
-  wordsCheck: boolean = true
+    text: string,
+    model: string = "gpt-3.5-turbo",
+    gramarCheck: boolean = true,
+    spellCheck: boolean = true,
+    punctuationCheck: boolean = true,
+    wordsCheck: boolean = true
 ) {
-  "use server";
+    "use server";
 
-  const openai = new OpenAI();
+    const openai = new OpenAI();
 
-  let prompt =
-    "You are news analyst in Cision and you are writing daily news briefings." +
-    "You have been given the task to proofread and suggest improvements of another analyst’s daily writeup." +
-    `You should check the text below for ${
-      !gramarCheck ? "" : "grammar mistakes ,"
-    }${!spellCheck ? "" : "spelling mistakes, "}` +
-    `${
-      !punctuationCheck ? "" : "punctuation"
-    }, without touching the quoted parts. ` +
-    `${
-      !wordsCheck ? "" : "You should also suggest improvements for word choice."
-    }`;
+    let prompt =
+        "You are news analyst in Cision and you are writing daily news briefings." +
+        "You have been given the task to proofread and suggest improvements of another analyst’s daily writeup." +
+        `You should check the text below for ${!gramarCheck ? "" : "grammar mistakes ,"
+        }${!spellCheck ? "" : "spelling mistakes, "}` +
+        `${!punctuationCheck ? "" : "punctuation"
+        }, without touching the quoted parts. ` +
+        `${!wordsCheck ? "" : "You should also suggest improvements for word choice."
+        }`;
 
-  const chatCompletion = await openai.chat.completions.create({
-    messages: [
-      { role: "system", content: prompt },
-      { role: "user", content: text },
-    ],
-    model: model,
-  });
+    const chatCompletion = await openai.chat.completions.create({
+        messages: [
+            { role: "system", content: prompt },
+            { role: "user", content: text },
+        ],
+        model: model,
+    });
 
-  let promptTokens = chatCompletion.usage?.prompt_tokens ?? 0;
-  let completionsTokens = chatCompletion.usage?.completion_tokens ?? 0;
+    let promptTokens = chatCompletion.usage?.prompt_tokens ?? 0;
+    let completionsTokens = chatCompletion.usage?.completion_tokens ?? 0;
 
-  let cost =
-    OPEN_AI_MODELS[model as keyof typeof OPEN_AI_MODELS].prompt * promptTokens +
-    OPEN_AI_MODELS[model as keyof typeof OPEN_AI_MODELS].completion *
-      completionsTokens;
+    let cost =
+        OPEN_AI_MODELS[model as keyof typeof OPEN_AI_MODELS].prompt * promptTokens +
+        OPEN_AI_MODELS[model as keyof typeof OPEN_AI_MODELS].completion *
+        completionsTokens;
 
-  const resultText = chatCompletion.choices[0].message.content;
+    const resultText = chatCompletion.choices[0].message.content;
 
-  await prisma.history.create({
-    data: {
-      initialText: text,
-      resultText: resultText ?? "",
-      cost,
-      timestamp: new Date(),
-    },
-  });
+    await prisma.history.create({
+        data: {
+            initialText: text,
+            resultText: resultText ?? "",
+            cost,
+            timestamp: new Date(),
+            hasGrammarCheck: gramarCheck,
+            hasVocabularyCheck: spellCheck,
+            hasPunctuationCheck: punctuationCheck,
+            hasWordChoiceImprovement: wordsCheck,
+            hasPlagiarismRephrase: false,
+            useGpt4: model === "gpt-4" ? true : false,
+        },
+    });
 
-  return resultText;
+    return resultText;
 }
 
 /**
@@ -81,19 +84,19 @@ export async function check(
  * @returns A Promise that resolves to a FileObject representing the uploaded file.
  */
 export async function uploadFile(
-  fileStream: FsReadStream,
-  purpose: "assistants" | "fine-tune" = "assistants"
+    fileStream: FsReadStream,
+    purpose: "assistants" | "fine-tune" = "assistants"
 ): Promise<FileObject> {
-  "use server";
+    "use server";
 
-  const openai = new OpenAI();
+    const openai = new OpenAI();
 
-  const file = await openai.files.create({
-    file: fileStream,
-    purpose: purpose,
-  });
+    const file = await openai.files.create({
+        file: fileStream,
+        purpose: purpose,
+    });
 
-  return file;
+    return file;
 }
 
 /**
@@ -103,34 +106,49 @@ export async function uploadFile(
  * @returns Returns the rewritten text.
  */
 export async function plagiarism(
-  toCheckForPlagiarism: string,
-  model: string = "gpt-3.5-turbo"
+    toCheckForPlagiarism: string,
+    model: string = "gpt-3.5-turbo"
 ): Promise<string | null> {
-  "use server";
+    "use server";
 
-  const openai = new OpenAI();
+    const openai = new OpenAI();
 
-  const plagiarismPrompt = `rewrite this text to reduce plagiarism without changing the quoted text`;
-  let resultText = "";
-  try {
+    const plagiarismPrompt = `rewrite this text to reduce plagiarism without changing the quoted text`;
     const chatCompletion = await openai.chat.completions
-      .create({
-        messages: [
-          {
-            role: "user",
-            content: `${plagiarismPrompt} ${toCheckForPlagiarism}`,
-          },
-        ],
-        model: model,
-      })
-      .catch((error) => console.log(error));
+        .create({
+            messages: [
+                {
+                    role: "user",
+                    content: `${plagiarismPrompt} ${toCheckForPlagiarism}`,
+                },
+            ],
+            model: model,
+        });
 
-    var res = chatCompletion as ChatCompletion;
-    resultText = res.choices[0].message.content ?? "";
-    console.log(resultText);
-  } catch (error) {
-    console.error(error);
-  }
+    let promptTokens = chatCompletion.usage?.prompt_tokens ?? 0;
+    let completionsTokens = chatCompletion.usage?.completion_tokens ?? 0;
 
-  return resultText;
+    let cost =
+        OPEN_AI_MODELS[model as keyof typeof OPEN_AI_MODELS].prompt * promptTokens +
+        OPEN_AI_MODELS[model as keyof typeof OPEN_AI_MODELS].completion *
+        completionsTokens;
+
+    const resultText = chatCompletion.choices[0].message.content;
+
+    await prisma.history.create({
+        data: {
+            initialText: toCheckForPlagiarism,
+            resultText: resultText ?? "",
+            cost,
+            timestamp: new Date(),
+            hasGrammarCheck: false,
+            hasVocabularyCheck: false,
+            hasPunctuationCheck: false,
+            hasWordChoiceImprovement: false,
+            hasPlagiarismRephrase: true,
+            useGpt4: model === "gpt-4" ? true : false,
+        },
+    });
+
+    return resultText;
 }
