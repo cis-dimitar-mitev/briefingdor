@@ -151,7 +151,8 @@ const HomePage = () => {
               output && (
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: diff.prettyHtml(textDiff),
+                    __html:
+                      diff?.prettyHtml(textDiff) || "<div>Loading...</div>",
                   }}
                 />
               )
