@@ -33,6 +33,17 @@ const HomePage = ({ check, plagiarism }: any) => {
     setPrimaryText(value);
   };
 
+  const handleReset = () => {
+    setShoudCheckGrammarMistakes(false);
+    setShouldCheckSpellingMistakes(false);
+    setShoudCheckPunctuation(false);
+    setImproveWordChoice(false);
+    setShouldRewrite(false);
+    setUseGpt4Model(false);
+    setPrimaryText("");
+    setOutput("");
+  }
+
   const handleCheckText = async () => {
     setIsLoading(true);
     let checkedText: string | null = null;
@@ -56,6 +67,18 @@ const HomePage = ({ check, plagiarism }: any) => {
     setIsLoading(false);
   };
 
+  const toggleRewrite = () => {
+    if (shouldRewrite) {
+      setShouldRewrite(false);
+    } else {
+      setShoudCheckGrammarMistakes(false);
+      setShouldCheckSpellingMistakes(false);
+      setShoudCheckPunctuation(false);
+      setImproveWordChoice(false);
+      setShouldRewrite(true);
+    }
+  }
+
   return (
     <>
       <div className={styles.checkboxesContainer}>
@@ -70,6 +93,7 @@ const HomePage = ({ check, plagiarism }: any) => {
               />
             }
             label="Grammar mistakes​"
+            disabled={shouldRewrite}
           />
 
           <FormControlLabel
@@ -82,6 +106,7 @@ const HomePage = ({ check, plagiarism }: any) => {
               />
             }
             label="Spelling mistakes​"
+            disabled={shouldRewrite}
           />
 
           <FormControlLabel
@@ -94,6 +119,7 @@ const HomePage = ({ check, plagiarism }: any) => {
               />
             }
             label="Punctuation"
+            disabled={shouldRewrite}
           />
 
           <FormControlLabel
@@ -104,13 +130,14 @@ const HomePage = ({ check, plagiarism }: any) => {
               />
             }
             label="Word choice improvements"
+            disabled={shouldRewrite}
           />
 
           <FormControlLabel
             control={
               <Checkbox
                 checked={shouldRewrite}
-                onClick={() => setShouldRewrite(!shouldRewrite)}
+                onClick={toggleRewrite}
               />
             }
             label="Rewrite to reduce plagiarism"
@@ -159,13 +186,25 @@ const HomePage = ({ check, plagiarism }: any) => {
           )
         )}
 
-        <Button
-          style={{ background: "#00607A", marginTop: 20 }}
-          variant="contained"
-          onClick={handleCheckText}
-        >
-          Check
-        </Button>
+        {
+          output
+            ?
+            <Button
+              style={{ background: "#00607A", marginTop: 20 }}
+              variant="contained"
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
+            :
+            <Button
+              style={{ background: "#00607A", marginTop: 20 }}
+              variant="contained"
+              onClick={handleCheckText}
+            >
+              Check
+            </Button>
+        }
       </div>
     </>
   );
