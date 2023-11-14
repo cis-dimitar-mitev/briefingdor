@@ -17,6 +17,12 @@ model Settings {
 
 model History{
   id Int @id @default(autoincrement())
+  hasGrammarCheck Boolean
+  hasVocabularyCheck Boolean
+  hasPunctuationCheck Boolean
+  hasWordChoiceImprovement Boolean
+  hasPlagiarismRephrase Boolean
+  useGpt4 Boolean
   initialText String
   resultText String
   timestamp DateTime
