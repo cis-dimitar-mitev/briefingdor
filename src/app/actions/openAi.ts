@@ -5,7 +5,9 @@ import OPEN_AI_MODELS from "@/utilis/utilis";
 import { prisma } from "@/db";
 import { ChatCompletion } from "openai/resources/index.mjs";
 
-export const runtime = "edge";
+export const config = {
+  maxDuration: 300,
+};
 
 /**
  * Checks the given text for grammar, spelling, punctuation, and word choice errors using OpenAI's GPT-3 model.
