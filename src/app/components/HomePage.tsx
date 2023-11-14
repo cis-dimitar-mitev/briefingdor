@@ -9,6 +9,9 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
+
+import ReactDiffViewer from "react-diff-viewer";
+
 import styles from "../page.module.css";
 
 const HomePage = ({ check, plagiarism }: any) => {
@@ -143,17 +146,22 @@ const HomePage = ({ check, plagiarism }: any) => {
                 <CircularProgress size={100} />
               </div>
             ) : (
-              <textarea
-                value={output}
-                rows={20}
-                className={styles.textAreaSummary}
-                onChange={handleAddText}
-              />
+              output && (
+                <ReactDiffViewer
+                  oldValue={primaryText}
+                  newValue={output}
+                  splitView={true}
+                />
+              )
             )}
           </div>
         </div>
 
-        <Button style={{ background: '#00607A' }} variant="contained" onClick={handleCheckText}>
+        <Button
+          style={{ background: "#00607A" }}
+          variant="contained"
+          onClick={handleCheckText}
+        >
           Check
         </Button>
       </div>
