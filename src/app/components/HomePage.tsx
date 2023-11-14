@@ -9,7 +9,6 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
-import Diff from "text-diff";
 import styles from "../page.module.css";
 
 const HomePage = () => {
@@ -45,18 +44,11 @@ const HomePage = () => {
       );
     } else {
       console.log("plagiarism");
-      checkedText = await plagiarism(
-        primaryText,
-        useGpt4Model ? "gpt-4" : "gpt-3.5-turbo"
-      );
+      checkedText = await plagiarism(primaryText, useGpt4Model ? "gpt-4" : "gpt-3.5-turbo");
     }
     setOutput(checkedText || "");
     setIsLoading(false);
   };
-
-  const diff = new Diff();
-  const textDiff = diff.main(primaryText, output);
-  diff.prettyHtml(textDiff);
 
   return (
     <>
@@ -148,13 +140,12 @@ const HomePage = () => {
                 <CircularProgress size={100} />
               </div>
             ) : (
-              output && (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: diff.prettyHtml(textDiff),
-                  }}
-                />
-              )
+              <textarea
+                value={output}
+                rows={20}
+                className={styles.textAreaSummary}
+                onChange={handleAddText}
+              />
             )}
           </div>
         </div>
