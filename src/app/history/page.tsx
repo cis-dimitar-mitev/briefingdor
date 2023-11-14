@@ -10,7 +10,7 @@ export default async function History() {
     <div className={styles.historyContainer}>
       <Suspense fallback={<div>Loading...</div>}>
         <ClientSideHistory
-          rows={rows.map((row) => ({
+          rows={rows.map((row: any) => ({
             resultText: row.resultText,
             initialText: row.initialText,
             price: row.cost,
