@@ -6,6 +6,10 @@ import { Link } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
+export const config = {
+  maxDuration: 300,
+};
+
 export const metadata: Metadata = {
   title: "Briefingdor",
   description: "Cision Hackathon Project",
