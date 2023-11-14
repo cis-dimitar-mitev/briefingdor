@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-import ReactDiffViewer from "react-diff-viewer";
+import ReactDiffViewer from "react-diff-viewer-continued";
 
 import styles from "../page.module.css";
 
