@@ -160,7 +160,7 @@ const HomePage = ({ check, plagiarism }: any) => {
           />
         </FormGroup>
 
-        {!output && !isLoading && (
+        {!output && !shouldRewrite && !isLoading && (
           <div className={styles.textAreaContainer}>
             <div className={styles.textAreaDiv}>
               <h4 className={styles.textAreaHeading}>Add your text</h4>
@@ -175,12 +175,39 @@ const HomePage = ({ check, plagiarism }: any) => {
           </div>
         )}
 
+        {!isLoading && shouldRewrite && (
+
+          <div className={styles.textAreaContainer}>
+            <div className={styles.textAreaDiv}>
+              <h4 className={styles.textAreaHeading}>Add your text</h4>
+              <textarea
+                value={primaryText}
+                className={styles.textAreaSummary}
+                rows={30}
+                onChange={handleAddText}
+                style={{ minWidth: "90vw !important" }}
+              />
+            </div>
+
+            <div className={styles.textAreaDiv}>
+              <h4 className={styles.textAreaHeading}>Result</h4>
+              <textarea
+                value={output}
+                className={styles.textAreaSummary}
+                rows={30}
+                onChange={handleAddText}
+                style={{ minWidth: "90vw !important" }}
+              />
+            </div>
+          </div>
+        )}
+
         {isLoading ? (
           <div className={styles.spinner}>
             <CircularProgress size={100} />
           </div>
         ) : (
-          output && (
+          output && !shouldRewrite && (
             <div>
               <FormControl>
                 <FormLabel>Choose comparison mode:</FormLabel>
