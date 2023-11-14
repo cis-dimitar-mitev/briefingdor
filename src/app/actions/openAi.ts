@@ -1,5 +1,3 @@
-"use server";
-
 import OpenAI from "openai";
 import { FileObject } from "openai/resources/files.mjs";
 import { FsReadStream } from "openai/_shims/index.mjs";
@@ -29,6 +27,8 @@ export async function check(
   punctuationCheck: boolean = true,
   wordsCheck: boolean = true
 ) {
+  "use server";
+
   let prompt =
     "You are news analyst in Cision and you are writing daily news briefings." +
     "You have been given the task to proofread and suggest improvements of another analyst’s daily writeup." +
@@ -82,6 +82,8 @@ export async function uploadFile(
   fileStream: FsReadStream,
   purpose: "assistants" | "fine-tune" = "assistants"
 ): Promise<FileObject> {
+  "use server";
+
   const file = await openai.files.create({
     file: fileStream,
     purpose: purpose,
@@ -100,6 +102,8 @@ export async function plagiarism(
   toCheckForPlagiarism: string,
   model: string = "gpt-3.5-turbo"
 ): Promise<string | null> {
+  "use server";
+
   const plagiarismPrompt = `rewrite this text to reduce plagiarism without changing the quoted text`;
   let resultText = "";
   try {

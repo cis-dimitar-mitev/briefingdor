@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { check, plagiarism } from "../actions/openAi";
+
 import {
   Checkbox,
   FormGroup,
@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import styles from "../page.module.css";
 
-const HomePage = () => {
+const HomePage = ({ check, plagiarism }: any) => {
   const [shouldCheckGrammarMistakes, setShoudCheckGrammarMistakes] =
     useState<boolean>(false);
   const [shouldCheckSpellingMistakes, setShouldCheckSpellingMistakes] =
@@ -44,7 +44,10 @@ const HomePage = () => {
       );
     } else {
       console.log("plagiarism");
-      checkedText = await plagiarism(primaryText, useGpt4Model ? "gpt-4" : "gpt-3.5-turbo");
+      checkedText = await plagiarism(
+        primaryText,
+        useGpt4Model ? "gpt-4" : "gpt-3.5-turbo"
+      );
     }
     setOutput(checkedText || "");
     setIsLoading(false);
