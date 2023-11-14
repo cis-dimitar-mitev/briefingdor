@@ -59,7 +59,7 @@ const HomePage = ({ check, plagiarism }: any) => {
   return (
     <>
       <div className={styles.checkboxesContainer}>
-        <FormGroup>
+        <FormGroup row={true}>
           <FormControlLabel
             control={
               <Checkbox
@@ -134,13 +134,10 @@ const HomePage = ({ check, plagiarism }: any) => {
               <textarea
                 value={primaryText}
                 className={styles.textAreaSummary}
-                rows={20}
+                rows={30}
                 onChange={handleAddText}
+                style={{ minWidth: "90vw !important" }}
               />
-            </div>
-
-            <div className={styles.textAreaDiv}>
-              <h4 className={styles.textAreaHeading}>Output</h4>
             </div>
           </div>
         )}
@@ -163,7 +160,7 @@ const HomePage = ({ check, plagiarism }: any) => {
         )}
 
         <Button
-          style={{ background: "#00607A" }}
+          style={{ background: "#00607A", marginTop: 20 }}
           variant="contained"
           onClick={handleCheckText}
         >
