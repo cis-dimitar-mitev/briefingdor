@@ -5,9 +5,8 @@ import OPEN_AI_MODELS from "@/utilis/utilis";
 import { prisma } from "@/db";
 import { ChatCompletion } from "openai/resources/index.mjs";
 
+export const runtime = "nodejs";
 export const maxDuration = 300;
-
-const openai = new OpenAI();
 
 /**
  * Checks the given text for grammar, spelling, punctuation, and word choice errors using OpenAI's GPT-3 model.
@@ -28,6 +27,8 @@ export async function check(
   wordsCheck: boolean = true
 ) {
   "use server";
+
+  const openai = new OpenAI();
 
   let prompt =
     "You are news analyst in Cision and you are writing daily news briefings." +
@@ -84,6 +85,8 @@ export async function uploadFile(
 ): Promise<FileObject> {
   "use server";
 
+  const openai = new OpenAI();
+
   const file = await openai.files.create({
     file: fileStream,
     purpose: purpose,
@@ -103,6 +106,8 @@ export async function plagiarism(
   model: string = "gpt-3.5-turbo"
 ): Promise<string | null> {
   "use server";
+
+  const openai = new OpenAI();
 
   const plagiarismPrompt = `rewrite this text to reduce plagiarism without changing the quoted text`;
   let resultText = "";
