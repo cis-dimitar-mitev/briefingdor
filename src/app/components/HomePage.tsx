@@ -5,9 +5,13 @@ import { useState } from "react";
 import {
   Checkbox,
   FormGroup,
+  FormControl,
   FormControlLabel,
   Button,
   CircularProgress,
+  FormLabel,
+  RadioGroup,
+  Radio,
 } from "@mui/material";
 
 import ReactDiffViewer from "react-diff-viewer-continued";
@@ -78,6 +82,8 @@ const HomePage = ({ check, plagiarism }: any) => {
       setShouldRewrite(true);
     }
   }
+
+  const [comparisonMode, setComparisonMode] = useState("diffChars");
 
   return (
     <>
@@ -175,14 +181,57 @@ const HomePage = ({ check, plagiarism }: any) => {
           </div>
         ) : (
           output && (
-            <ReactDiffViewer
-              oldValue={primaryText}
-              newValue={output}
-              splitView={true}
-              hideLineNumbers={true}
-              leftTitle={"Initial text"}
-              rightTitle={"Corrected text"}
-            />
+            <div>
+              <FormControl>
+                <FormLabel>Choose comparison mode:</FormLabel>
+                <RadioGroup
+                  row
+                  value={comparisonMode}
+                  onChange={(e) => setComparisonMode(e.target.value)}
+                >
+                  <FormControlLabel
+                    value="diffChars"
+                    control={<Radio />}
+                    label="Character"
+                  />
+                  <FormControlLabel
+                    value="diffWords"
+                    control={<Radio />}
+                    label="Word"
+                  />
+                  <FormControlLabel
+                    value="diffWordsWithSpace"
+                    control={<Radio />}
+                    label="Word with space"
+                  />
+                  <FormControlLabel
+                    value="diffLines"
+                    control={<Radio />}
+                    label="Lines"
+                  />
+                  <FormControlLabel
+                    value="diffTrimmedLines"
+                    control={<Radio />}
+                    label="Trimmed Lines"
+                  />{" "}
+                  <FormControlLabel
+                    value="diffSentences"
+                    control={<Radio />}
+                    label="Sentences"
+                  />
+                </RadioGroup>
+              </FormControl>
+              <ReactDiffViewer
+                oldValue={primaryText}
+                newValue={output}
+                splitView={true}
+                hideLineNumbers={true}
+                leftTitle={"Initial text"}
+                rightTitle={"Corrected text"}
+                //@ts-ignore
+                compareMethod={comparisonMode}
+              />
+            </div>
           )
         )}
 
