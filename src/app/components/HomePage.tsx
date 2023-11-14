@@ -150,7 +150,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <Button variant="outlined" onClick={handleCheckText}>
+        <Button style={{ background: '#00607A' }} variant="contained" onClick={handleCheckText}>
           Check
         </Button>
       </div>
