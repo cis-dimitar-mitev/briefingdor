@@ -248,16 +248,18 @@ const HomePage = ({ check, plagiarism }: any) => {
                   />
                 </RadioGroup>
               </FormControl>
-              <ReactDiffViewer
-                oldValue={primaryText}
-                newValue={output}
-                splitView={true}
-                hideLineNumbers={true}
-                leftTitle={"Initial text"}
-                rightTitle={"Corrected text"}
-                //@ts-ignore
-                compareMethod={comparisonMode}
-              />
+              <div style={{ height: "65vh", overflowY: "auto" }}>
+                <ReactDiffViewer
+                  oldValue={primaryText}
+                  newValue={output}
+                  splitView={true}
+                  hideLineNumbers={true}
+                  leftTitle={"Initial text"}
+                  rightTitle={"Corrected text"}
+                  //@ts-ignore
+                  compareMethod={comparisonMode}
+                />
+              </div>
             </div>
           )
         )}
@@ -277,6 +279,7 @@ const HomePage = ({ check, plagiarism }: any) => {
               style={{ background: "#00607A", marginTop: 20 }}
               variant="contained"
               onClick={handleCheckText}
+              disabled={isLoading}
             >
               Check
             </Button>

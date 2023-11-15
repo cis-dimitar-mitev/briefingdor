@@ -74,7 +74,7 @@ export const History = ({ rows }: any) => {
         rows={rows}
         columns={columns}
         style={{ backgroundColor: "#fff" }}
-        sx={{ maxHeight: "43vh" }}
+        sx={{ maxHeight: "35vh", marginTop: "60px" }}
         onRowClick={(row) => setSelectedRow(row)}
       />
 
@@ -82,7 +82,7 @@ export const History = ({ rows }: any) => {
       <hr />
       <br />
       {selectedRow ? (
-        <div style={{ maxHeight: "43vh" }}>
+        <div>
           <FormControl>
             <FormLabel>Choose comparison mode:</FormLabel>
             <RadioGroup
@@ -122,16 +122,18 @@ export const History = ({ rows }: any) => {
               />
             </RadioGroup>
           </FormControl>
-          <ReactDiffViewer
-            oldValue={selectedRow.row.initialText}
-            newValue={selectedRow.row.resultText}
-            splitView={true}
-            hideLineNumbers={true}
-            leftTitle={"Initial text"}
-            rightTitle={"Corrected text"}
-            //@ts-ignore
-            compareMethod={comparisonMode}
-          />
+          <div style={{ maxHeight: "35vh", overflowY: "auto" }}>
+            <ReactDiffViewer
+              oldValue={selectedRow.row.initialText}
+              newValue={selectedRow.row.resultText}
+              splitView={true}
+              hideLineNumbers={true}
+              leftTitle={"Initial text"}
+              rightTitle={"Corrected text"}
+              //@ts-ignore
+              compareMethod={comparisonMode}
+            />
+          </div>
         </div>
       ) : (
         "Please select a row to view."
