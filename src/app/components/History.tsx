@@ -1,9 +1,54 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
+
+const renderBoolean = (params: any) =>
+  params.value ? (
+    <FontAwesomeIcon icon={faCheck} />
+  ) : (
+    <FontAwesomeIcon icon={faX} />
+  );
+
 const columns = [
   { field: "id", headerName: "Id", width: 30 },
   { field: "initialText", headerName: "Initial Text", flex: 1 },
-  { field: "resultText", headerName: "Result Text", flex: 1 },
+  {
+    field: "isGrammar",
+    renderCell: renderBoolean,
+    headerName: "Grammar",
+    width: 100,
+  },
+  {
+    field: "isVocab",
+    renderCell: renderBoolean,
+    headerName: "Vocab",
+    width: 100,
+  },
+  {
+    field: "isPunct",
+    renderCell: renderBoolean,
+    headerName: "Punctuation",
+    width: 100,
+  },
+  {
+    field: "isWordChoice",
+    renderCell: renderBoolean,
+    headerName: "Word Choice",
+    width: 100,
+  },
+  {
+    field: "isPlagiarismL",
+    renderCell: renderBoolean,
+    headerName: "Plagiarism",
+    width: 100,
+  },
+  {
+    field: "isGPT4",
+    renderCell: renderBoolean,
+    headerName: "GPT4",
+    width: 100,
+  },
   { field: "date", headerName: "Date", width: 150 },
   { field: "price", headerName: "Price", width: 150 },
 ];
