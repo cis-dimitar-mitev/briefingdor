@@ -13,7 +13,7 @@ export default async function History() {
           rows={rows.map((row: any) => ({
             resultText: row.resultText,
             initialText: row.initialText,
-            price: row.cost,
+            price: row.cost.toFixed(3),
             id: row.id,
             isGrammar: row.hasGrammarCheck,
             isVocab: row.hasVocabularyCheck,
